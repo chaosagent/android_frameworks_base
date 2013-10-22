@@ -530,6 +530,7 @@ public class WindowManagerService extends IWindowManager.Stub
     static final long WALLPAPER_TIMEOUT = 150;
     // Time we wait after a timeout before trying to wait again.
     static final long WALLPAPER_TIMEOUT_RECOVERY = 10000;
+    boolean mAnimateWallpaperWithTarget;
 
     AppWindowToken mFocusedApp = null;
 
@@ -8496,6 +8497,7 @@ public class WindowManagerService extends IWindowManager.Stub
                 }
             }
 
+            mAnimateWallpaperWithTarget = false;
             if (closingAppHasWallpaper && openingAppHasWallpaper) {
                 if (DEBUG_APP_TRANSITIONS) Slog.v(TAG, "Wallpaper animation!");
                 switch (transit) {
@@ -8523,6 +8525,8 @@ public class WindowManagerService extends IWindowManager.Stub
                 transit = AppTransition.TRANSIT_WALLPAPER_OPEN;
                 if (DEBUG_APP_TRANSITIONS) Slog.v(TAG,
                         "New transit into wallpaper: " + transit);
+            } else {
+                mAnimateWallpaperWithTarget = true;
             }
 
             // If all closing windows are obscured, then there is
