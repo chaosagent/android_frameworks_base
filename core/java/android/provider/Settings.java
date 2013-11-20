@@ -1736,6 +1736,23 @@ public final class Settings {
         @Deprecated
         public static final String WIFI_STATIC_DNS2 = "wifi_static_dns2";
 
+        /**
+         * Allows automatic retrieval of mms contents
+         * <p>Type: INT</p>
+         * 0 -- false
+         * 1 -- true
+         * @hide
+         */
+        public static final String MMS_AUTO_RETRIEVAL = "mms_auto_retrieval";
+
+        /**
+         * Allows automatic retrieval of mms contents during roaming
+         * <p>Type: INT</p>
+         * 0 -- false
+         * 1 -- true
+         * @hide
+         */
+        public static final String MMS_AUTO_RETRIEVAL_ON_ROAMING = "mms_auto_on_roaming";
 
         /**
          * Determines whether remote devices may discover and/or connect to
@@ -2039,6 +2056,56 @@ public final class Settings {
             "notifications_use_ring_volume";
 
         /**
+         * Whether the blacklisting feature for phone calls is enabled
+         * @hide
+         */
+        public static final String PHONE_BLACKLIST_ENABLED = "phone_blacklist_enabled";
+
+        /**
+         * Whether a notification should be shown when a call/message is blocked
+         * @hide
+         */
+        public static final String PHONE_BLACKLIST_NOTIFY_ENABLED = "phone_blacklist_notify_enabled";
+
+        /**
+         * Whether the blacklisting feature for phone calls from private numbers is enabled
+         * @hide
+         */
+        public static final String PHONE_BLACKLIST_PRIVATE_NUMBER_MODE = "phone_blacklist_private_number_enabled";
+
+        /**
+         * Whether the blacklisting feature for phone calls from unknown numbers is enabled
+         * @hide
+         */
+        public static final String PHONE_BLACKLIST_UNKNOWN_NUMBER_MODE = "phone_blacklist_unknown_number_enabled";
+
+        /**
+         * Constants to be used for {@link PHONE_BLACKLIST_PRIVATE_NUMBER_MODE} and
+         * {@link PHONE_BLACKLIST_UNKNOWN_NUMBER_MODE}.
+         * @hide
+         */
+        public static final int BLACKLIST_DO_NOT_BLOCK = 0;
+
+        /**
+         * @hide
+         */
+        public static final int BLACKLIST_BLOCK = 1;
+        /**
+         * @hide
+         */
+        public static final int BLACKLIST_PHONE_SHIFT = 0;
+        /**
+         * @hide
+         */
+        public static final int BLACKLIST_MESSAGE_SHIFT = 4;
+
+        /**
+         * Whether the regex blacklisting feature for phone calls is enabled
+         * @hide
+         */
+        public static final String PHONE_BLACKLIST_REGEX_ENABLED = "phone_blacklist_regex_enabled";
+
+        /**
          * Whether silent mode should allow vibration feedback. This is used
          * internally in AudioService and the Sound settings activity to
          * coordinate decoupling of vibrate and silent modes. This setting
@@ -2329,6 +2396,109 @@ public final class Settings {
          * @hide
          */
         public static final String NOTIFICATION_LIGHT_PULSE = "notification_light_pulse";
+
+        /** Sprint MWI Quirk: Show message wait indicator notifications
+         * @hide
+         */
+        public static final String ENABLE_MWI_NOTIFICATION = "enable_mwi_notification";
+
+        /**
+         * What color to use for the notification LED by default
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_DEFAULT_COLOR = "notification_light_pulse_default_color";
+
+        /**
+         * How long to flash the notification LED by default
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_ON = "notification_light_pulse_default_led_on";
+
+        /**
+         * How long to wait between flashes for the notification LED by default
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_DEFAULT_LED_OFF = "notification_light_pulse_default_led_off";
+
+        /**
+         * What color to use for the missed call notification LED
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_CALL_COLOR = "notification_light_pulse_call_color";
+
+        /**
+         * How long to flash the missed call notification LED
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_CALL_LED_ON = "notification_light_pulse_call_led_on";
+
+        /**
+         * How long to wait between flashes for the missed call notification LED
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_CALL_LED_OFF = "notification_light_pulse_call_led_off";
+
+        /**
+         * What color to use for the voicemail notification LED
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_COLOR = "notification_light_pulse_vmail_color";
+
+        /**
+         * How long to flash the voicemail notification LED
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_LED_ON = "notification_light_pulse_vmail_led_on";
+
+        /**
+         * How long to wait between flashes for the voicemail notification LED
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_VMAIL_LED_OFF = "notification_light_pulse_vmail_led_off";
+
+        /**
+         * Whether to use the custom LED values for the notification pulse LED.
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_CUSTOM_ENABLE = "notification_light_pulse_custom_enable";
+
+        /**
+         * Which custom LED values to use for the notification pulse LED.
+         * @hide
+         */
+        public static final String NOTIFICATION_LIGHT_PULSE_CUSTOM_VALUES = "notification_light_pulse_custom_values";
+
+        /**
+         * Whether the battery light should be enabled (if hardware supports it)
+         * The value is boolean (1 or 0).
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_ENABLED = "battery_light_enabled";
+
+        /**
+         * Whether the battery LED should repeatedly flash when the battery is low
+         * on charge. The value is boolean (1 or 0).
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_PULSE = "battery_light_pulse";
+
+        /**
+         * What color to use for the battery LED while charging - low
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_LOW_COLOR = "battery_light_low_color";
+
+        /**
+         * What color to use for the battery LED while charging - medium
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_MEDIUM_COLOR = "battery_light_medium_color";
+
+        /**
+         * What color to use for the battery LED while charging - full
+         * @hide
+         */
+        public static final String BATTERY_LIGHT_FULL_COLOR = "battery_light_full_color";
 
         /**
          * What color to use for the notification LED by default
@@ -2635,6 +2805,8 @@ public final class Settings {
             WIFI_STATIC_NETMASK,
             WIFI_STATIC_DNS1,
             WIFI_STATIC_DNS2,
+            MMS_AUTO_RETRIEVAL,
+            MMS_AUTO_RETRIEVAL_ON_ROAMING,
             BLUETOOTH_DISCOVERABILITY,
             BLUETOOTH_DISCOVERABILITY_TIMEOUT,
             DIM_SCREEN,
