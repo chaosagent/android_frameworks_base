@@ -64,7 +64,6 @@ import android.view.WindowManagerGlobal;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.internal.util.rascarlo.TorchConstants;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.ActivityState;
 import com.android.systemui.statusbar.phone.QuickSettingsModel.BluetoothState;
@@ -780,7 +779,7 @@ class QuickSettings {
             torchTile.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(TorchConstants.ACTION_TOGGLE_STATE);
+                    Intent intent = new Intent("net.cactii.flash2.TOGGLE_FLASHLIGHT");
                     mContext.sendBroadcast(intent);
                 }
             });
@@ -789,7 +788,9 @@ class QuickSettings {
                     @Override
                     public boolean onLongClick(View v) {
                         getService().animateCollapsePanels();
-                        startSettingsActivity(TorchConstants.INTENT_LAUNCH_APP);
+                        Intent intent = new Intent(Intent.ACTION_MAIN);
+                        intent.setClassName("net.cactii.flash2", "net.cactii.flash2.MainActivity");
+                        startSettingsActivity(intent);
                         return true;
                     }
                 });
