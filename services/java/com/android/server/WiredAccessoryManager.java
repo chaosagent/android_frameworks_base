@@ -301,7 +301,8 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
                         FileReader file = new FileReader(uei.getSwitchStatePath());
                         int len = file.read(buffer, 0, 1024);
                         file.close();
-                        curState = Integer.valueOf((new String(buffer, 0, len)).trim());
+                        curState = validateSwitchState(
+                                Integer.valueOf((new String(buffer, 0, len)).trim()));
 
                         if (curState > 0) {
                             updateStateLocked(uei.getDevPath(), uei.getDevName(), curState);
@@ -316,12 +317,21 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
             }
 
             // At any given time accessories could be inserted
-            // one on the board, one on the dock and one on HDMI:
-            // observe three UEVENTs
+            // one on the board, one on the dock, one on the
+            // samsung dock and one on HDMI:
+            // observe all UEVENTs that have valid switch supported
+            // by the Kernel
             for (int i = 0; i < mUEventInfo.size(); ++i) {
                 UEventInfo uei = mUEventInfo.get(i);
                 startObserving("DEVPATH="+uei.getDevPath());
             }
+        }
+
+        private int validateSwitchState(int state) {
+            // Some drivers, namely HTC headset ones, add additional bits to
+            // the switch state. As we only are able to deal with the states
+            // 0, 1 and 2, mask out all the other bits
+            return state & 0x3;
         }
 
         private List<UEventInfo> makeObservedUEventList() {
@@ -344,6 +354,14 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
                 retVal.add(uei);
             } else {
                 Slog.w(TAG, "This kernel does not have usb audio support");
+            }
+
+            // Monitor Samsung USB audio
+            uei = new UEventInfo("dock", BIT_USB_HEADSET_DGTL, BIT_USB_HEADSET_ANLG);
+            if (uei.checkSwitchExists()) {
+                retVal.add(uei);
+            } else {
+                Slog.w(TAG, "This kernel does not have samsung usb dock audio support");
             }
 
             // Monitor HDMI
@@ -373,10 +391,10 @@ final class WiredAccessoryManager implements WiredAccessoryCallbacks {
         public void onUEvent(UEventObserver.UEvent event) {
             if (LOG) Slog.v(TAG, "Headset UEVENT: " + event.toString());
 
+            int state = validateSwitchState(Integer.parseInt(event.get("SWITCH_STATE")));
             try {
                 String devPath = event.get("DEVPATH");
                 String name = event.get("SWITCH_NAME");
-                int state = Integer.parseInt(event.get("SWITCH_STATE"));
                 synchronized (mLock) {
                     updateStateLocked(devPath, name, state);
                 }

@@ -346,6 +346,13 @@ public final class BatteryStatsService extends IBatteryStats.Stub {
         synchronized (mStats) {
             mBluetoothPendingStats = false;
             mStats.noteBluetoothOffLocked();
+            mStats.setBtHeadset(null);
+        }
+
+        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
+        if (adapter != null && mBluetoothHeadset != null) {
+            adapter.closeProfileProxy(BluetoothProfile.HEADSET, mBluetoothHeadset);
+            mBluetoothHeadset = null;
         }
     }
     
@@ -416,6 +423,20 @@ public final class BatteryStatsService extends IBatteryStats.Stub {
         enforceCallingPermission();
         synchronized (mStats) {
             mStats.noteWifiScanStoppedFromSourceLocked(ws);
+        }
+    }
+
+    public void noteWifiBatchedScanStartedFromSource(WorkSource ws, int csph) {
+        enforceCallingPermission();
+        synchronized (mStats) {
+            mStats.noteWifiBatchedScanStartedFromSourceLocked(ws, csph);
+        }
+    }
+
+    public void noteWifiBatchedScanStoppedFromSource(WorkSource ws) {
+        enforceCallingPermission();
+        synchronized (mStats) {
+            mStats.noteWifiBatchedScanStoppedFromSourceLocked(ws);
         }
     }
 
